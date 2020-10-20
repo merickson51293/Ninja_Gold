@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold Game</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}"> 
+</head>
+<body>
+    <header>
+        <h1>Ninja Gold</h1>
+        <a href="/reset"><button>Reset</button></a>
+    </header>
+        <div id="score">
+            <h4>Your Gold: <span>{{request.session.gold}}</span></h4>
+        </div>
+    <div id="forms">
+        <div id="place">
+            <h2>Farm</h2>
+            <h3>(earns 10-20 golds)</h3>
+            <form action="/process_gold" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="farm" name="place">
+                <button>Find Gold</button>
+            </form>
+        </div>
+        <div id="place">
+            <h2>Cave</h2>
+            <h3>(earns 5-10 golds)</h3>
+            <form action="/process_gold" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="cave" name="place">
+                <button>Find Gold</button>
+            </form>
+        </div>
+        <div id="place">
+            <h2>House</h3>
+                <h3>(earns 2-5 golds)</h3>
+            <form action="/process_gold" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="house" name="place">
+                <button>Find Gold</button>
+            </form>
+        </div>
+        <div id="place">
+            <h2>Casino</h2>
+            <h3>(earns/takes 0-50 golds)</h3>
+            <form action="/process_gold" method="POST">
+                {% csrf_token %}
+                <input type="hidden" value="casino" name="place">
+                <button>Find Gold</button>
+            </form>
+        </div>
+    </div>
+    <h5>Activities:</h5>
+    <div id="activities">
+        {% for activity in request.session.activities %}
+        {% if "gained" in activity %}
+        <li style=color:green>{{activity}}</li>
+        {% endif %}
+        {% if "lost" in activity %}
+        <li style=color:red>{{activity}}</li>
+        {% endif %}
+        {% endfor %}
+    </div>
+</body>
+</html>
